@@ -1,2 +1,2 @@
-# snuke.github.io
+# snuke
 A Small Snake Game I Work On Called Snuke
