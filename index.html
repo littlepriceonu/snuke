@@ -1,226 +1,83 @@
-<style>
-    .mainbody {
-        display: flex;
-        align-items: center;
-        justify-content: center;
+<head>
+    <title>Littlepriceonu - Snuke</title>
 
-        position:relative;
-        top:0;
-        left:0;
-        bottom:0;
-        right:0;
-        height:100%;
-        width:100%;
-        margin: 0;
+    <link rel="icon" type="image/x-icon" href="/favicon/favicon.ico">
 
-        /*
-        overflow-y: hidden;
-        overflow-x: hidden; */
-    }
-    
-    canvas {
-        position: absolute;
-        top:0;
-        left:0;
-        bottom:0;
-        right:0;
-    }
+    <style>
+        .mainbody {
+            display: flex;
+            align-items: center;
+            justify-content: center;
 
-    h1.pausedtext {
-        z-index: 1;
-        display: none;
-        font-family:'Courier New', Courier, monospace;
-        color: blue;
-    }
+            position:relative;
+            top:0;
+            left:0;
+            bottom:0;
+            right:0;
+            height:100%;
+            width:100%;
+            margin: 0;
 
-</style>
+            /*
+            overflow-y: hidden;
+            overflow-x: hidden; */
+        }
+
+        canvas {
+            position: absolute;
+            top:0;
+            left:0;
+            bottom:0;
+            right:0;
+        }
+
+        h1.pausedtext {
+            z-index: 1;
+            display: none;
+            font-family:'Courier New', Courier, monospace;
+            color: blue;
+        }
+
+        div.snukeholder {
+            background-color: rgb(32, 32, 32);
+            width: 100%;
+            height: 100%;
+
+            display :flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+
+        img.snukeimg {
+            position: relative;
+            top: -15%; 
+            right: 3%;
+        }
+
+        input.play {
+            width: 10%;
+            height: 10%;
+            background-color: rgb(11, 4, 15);
+            cursor: pointer;
+            outline: none;
+            border: none;
+            outline: none;
+            position: relative;
+            top: -30%;
+            color:rgb(132, 132, 255);
+        }
+    </style>
+</head>
+
 
 <body class="mainbody">
+    <div class="snukeholder" id="snukeholder">
+        <img class="snukeimg" src="./Snuke V1.png" alt="./Snuke V1.png">
+        <input id="play" class="play" type="button" value="Play!">
+    </div>
     <!-- <canvas id="canvas"></canvas> No Longer Needed Due To CanvasManger in main.js -->
     <h1 class="pausedtext" id="pausedtext" >Paused! (Press Escape To Un-Pause)</h1>
 </body>
 
-<script >
-class CanvasManager {
-    constructor (Canvas, updateCallBack, clearOnUpdate, paused, updateSpeed, fillStyle) {
-        this.canvas = Canvas
-        this.ctx = Canvas.getContext("2d");
-        this.updatecallback = updateCallBack;
-        this.clearonupdate = clearOnUpdate;
-        this.paused = paused
-        this.updatespeed = updateSpeed;
-        this.fillstyle = fillStyle
-    }
-
-    worldUpdate() {
-        if (!this.paused) {
-            if (this.clearonupdate) {
-                this.ctx.fillStyle = this.fillstyle
-                this.ctx.clearRect(0, 0, innerWidth, innerHeight)
-                this.ctx.fillRect(0, 0, innerWidth, innerHeight);
-                
-            }
-
-            for (let i=0; i < this.updatecallback.length; i++) {
-                this.updatecallback[i](this.ctx)
-            }
-        }
-    }
-
-    startUpdate() {
-        setInterval(this.worldUpdate.bind(this), this.updatespeed);
-    }
-
-    addCallBack (func) {
-        this.updatecallback.push(func)
-    }
-
-    fullScreenCanvas() {
-        this.canvas.height = window.innerHeight
-        this.canvas.width = window.innerWidth
-    }
-
-    removeCallBack(index) {
-        this.updatecallback = this.updatecallback.filter(element => element != this.updatecallback[index])
-    }
-
-    static createCanvasWithManager(className, id, updateCallBack, clearOnUpdate, paused, updateSpeed, fillStyle) {
-        let canvas = document.createElement('canvas')
-        document.body.appendChild(canvas)
-        canvas.width = innerWidth
-        canvas.height = innerHeight
-        canvas.id = id
-        canvas.className = className
-        return new CanvasManager(canvas, updateCallBack, clearOnUpdate, paused, updateSpeed, fillStyle)
-    }
-
-    static createPlainCanvas(className, id) {
-        let canvas = document.createElement('canvas')
-        document.body.appendChild(canvas)
-        canvas.width = innerWidth
-        canvas.height = innerHeight
-        canvas.id = id
-        canvas.className = className
-    }
-}
-
-/* 
-    Got This From https://github.com/littlepriceonu/Phy.js/blob/main/Canvas%20Manager/main.js
-    (Made It My Self)
-*/
-
-const canvasmanager = CanvasManager.createCanvasWithManager('canvas', 'canvas', [], true, false, 100, 'DimGray')
-
-addEventListener("resize", () => {
-    canvasmanager.fullScreenCanvas()
-})
-
-var moveyby = 0;
-var movexby = 10;
-
-function randomroundup(min, max) {
-    return Math.round((Math.random() * (max-min) + min) / 10) * 10;
-}
-
-addEventListener("keydown", (e) => {
-    if ((e.key == "w" || e.key == "ArrowUp") && moveyby != 10) {
-        movexby = 0;
-        moveyby = -10;
-    }
-
-
-    if ((e.key == "a" || e.key == "ArrowLeft") && movexby != 10) {
-        movexby = -10;
-        moveyby = 0;
-    }
-
-    if ((e.key == "d" || e.key == "ArrowRight") && movexby != -10) {
-        movexby = 10;
-        moveyby = 0;
-    }
-
-    if ((e.key == "s" || e.key == "ArrowDown") && moveyby != -10) {
-        movexby = 0;
-        moveyby = 10;
-    }
-
-    if (e.key == "Escape") {
-        if (!canvasmanager.paused) {
-            canvasmanager.paused = true;
-            document.querySelector("#pausedtext").style.display = "block";
-        }
-        else {
-            canvasmanager.paused = false;
-            document.querySelector("#pausedtext").style.display = "none"
-        }
-    }
-
-    if (e.key == "q") {
-        apples = [{x: randomroundup(0, innerWidth), y: randomroundup(0, innerHeight)}]
-    }
-})
-
-var apples = [{x: randomroundup(0, innerWidth), y: randomroundup(0, innerHeight)}]
-
-console.log(apples)
-
-
-var snuke = [{x:30, y:10}, {x: 20, y: 10}, {x: 10, y:10}, {x: 0, y:10}]
-
-function killsnuke() {
-    snuke = {}
-}
-
-var dead = false
-
-canvasmanager.addCallBack((ctx) => {
-
-    snuke.forEach(part => {
-        part.x = Math.round(part.x / 10) * 10 
-    })
-
-    let newhead = {x: snuke[0].x+movexby, y: snuke[0].y+moveyby}
-
-    let loopi = 0
-    snuke.forEach(part => {
-        apples.forEach(apple => {
-            if (part.x == apple.x && part.y == apple.y) {
-                snuke.push({x: snuke[snuke.length - 1].x-movexby, y: snuke[snuke.length - 1].y-moveyby})
-                apples.splice(apples.indexOf(apple), 1)
-                apples.push({x: randomroundup(0, innerWidth), y: randomroundup(0, innerHeight)})
-            }
-        })
-        if (newhead.x == part.x && newhead.y == part.y) {apples = [{x: randomroundup(0, innerWidth), y: randomroundup(0, innerHeight)}]; console.log("dead. snuke:", snuke); snuke = [{x:30, y:10}, {x: 20, y: 10}, {x: 10, y:10}, {x: 0, y:10}]; newhead = {x: snuke[0].x+movexby, y: snuke[0].y+moveyby}}
-    })
-    snuke.pop() // remove the last index in the array
-    snuke.unshift(newhead) // add newhead to the front of the array
-    // use snuke.push(item) to add to the end of the array
-    
-    apples.forEach(apple => {
-        ctx.fillStyle = 'red';
-        ctx.strokestyle = 'black';
-        ctx.fillRect(apple.x, apple.y, 10, 10);
-        ctx.strokeRect(apple.x, apple.y, 10, 10); 
-    })
-
-    snuke.forEach(part => {
-        part.y = Math.round(part.y / 10)*10
-        part.x = Math.round(part.x / 10)*10
-    })
-
-    snuke.forEach((part) => {
-        if (part.x > innerWidth) {part.x = 0}
-        if (part.x < 0) {part.x = innerWidth}
-        if (part.y > innerHeight) {part.y = 0}
-        if (part.y <0) {part.y = innerHeight}
-    })
-    // draw snuke
-    snuke.forEach(part => {
-        ctx.fillStyle = 'lightgreen';
-        ctx.strokestyle = 'darkgreen';
-        ctx.fillRect(part.x, part.y, 10, 10);
-        ctx.strokeRect(part.x, part.y, 10, 10);
-    })
-})
-
-canvasmanager.startUpdate()</script>
+<body class="scriptwrapper"><script src="./index.js"></script></body>
