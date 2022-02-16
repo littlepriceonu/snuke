@@ -65,6 +65,11 @@ class CanvasManager {
     Got This From https://github.com/littlepriceonu/Phy.js/blob/main/Canvas%20Manager/main.js
     (Made It My Self)
 */
+
+addEventListener("keydown", (e) => {if (e.key="Enter" && document.getElementById("play")){
+    document.getElementById("play").click()
+}})
+
 function start() {
     const canvasmanager = CanvasManager.createCanvasWithManager('canvas', 'canvas', [], true, false, 100, 'DimGray')
 
@@ -72,6 +77,7 @@ function start() {
         canvasmanager.fullScreenCanvas()
     })
 
+    var drawgrid = true;
     var moveyby = 0;
     var movexby = 10;
 
@@ -115,6 +121,23 @@ function start() {
         if (e.key == "q") {
             apples = [{x: randomroundup(0, innerWidth), y: randomroundup(0, innerHeight)}]
         }
+
+        if (e.key == "r") {
+            snuke = [{x:30, y:10}, {x: 20, y: 10}, {x: 10, y:10}, {x: 0, y:10}];// restart snake
+            movexby = 10
+            moveyby = 0
+            newhead = {x: snuke[0].x+movexby, y: snuke[0].y+moveyby} // Make it so the head is at the new restarted snake
+            apples = [{x: randomroundup(0, innerWidth), y: randomroundup(0, innerHeight)}];
+        }
+
+        if (e.key == "e") {
+            if (drawgrid) {
+                drawgrid = false
+            }
+            else {
+                drawgrid = true
+            }
+        }
     })
 
     var apples = [{x: randomroundup(0, innerWidth), y: randomroundup(0, innerHeight)}]
@@ -124,12 +147,26 @@ function start() {
 
     var snuke = [{x:30, y:10}, {x: 20, y: 10}, {x: 10, y:10}, {x: 0, y:10}]
 
-    function killsnuke() {
-        snuke = {}
-    }
-
     canvasmanager.addCallBack((ctx) => {
+        // draw lines 
+        
+        if (drawgrid) {
+            for (var i=0; i<=Math.round(innerWidth/10)*10/10; i++) {
+                ctx.fillStyle = "black";
+                ctx.beginPath();
+                ctx.moveTo(i*10,0);
+                ctx.lineTo(i*10, innerHeight);
+                ctx.stroke();
+            }
 
+            for (var i=0; i<=Math.round(innerHeight/10)*10/10; i++) {
+                ctx.fillStyle = "black";
+                ctx.beginPath();
+                ctx.moveTo(0, i*10);
+                ctx.lineTo(innerWidth, i*10);
+                ctx.stroke();
+            }
+        }
         // make sure snake doesn't have any placement errors
         snuke.forEach(part => {
             part.x = Math.round(part.x / 10) * 10 
@@ -153,6 +190,8 @@ function start() {
                 apples = [{x: randomroundup(0, innerWidth), y: randomroundup(0, innerHeight)}]; // make new apple
                 console.log("dead. snuke:", snuke); // log the snake 
                 snuke = [{x:30, y:10}, {x: 20, y: 10}, {x: 10, y:10}, {x: 0, y:10}];// restart snake
+                movexby = 10
+                moveyby = 0
                 newhead = {x: snuke[0].x+movexby, y: snuke[0].y+moveyby} // Make it so the head is at the new restarted snake
             }
         })

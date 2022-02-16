@@ -47,6 +47,7 @@
             flex-direction: column;
             justify-content: center;
             align-items: center;
+            
         }
 
         img.snukeimg {
@@ -67,6 +68,15 @@
             top: -30%;
             color:rgb(132, 132, 255);
         }
+
+        p {
+            position: relative;
+            bottom: 10%;
+            width: 80%;
+            font-size: 130%;
+            text-align: center;
+            color: white;
+        }
     </style>
 </head>
 
@@ -75,6 +85,7 @@
     <div class="snukeholder" id="snukeholder">
         <img class="snukeimg" src="./Snuke V1.png" alt="./Snuke V1.png">
         <input id="play" class="play" type="button" value="Play!">
+        <p>Press E to enable and disable the grid, Press Q to reroll apple position, Press R to restart the game, And Press ESC to pause</p>
     </div>
     <!-- <canvas id="canvas"></canvas> No Longer Needed Due To CanvasManger in main.js -->
     <h1 class="pausedtext" id="pausedtext" >Paused! (Press Escape To Un-Pause)</h1>
