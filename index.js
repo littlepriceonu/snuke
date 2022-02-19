@@ -66,7 +66,7 @@ class CanvasManager {
     (Made It My Self)
 */
 
-addEventListener("keydown", (e) => {if (e.key="Enter" && document.getElementById("play")){
+addEventListener("keydown", (e) => {if (e.key=="Enter" && document.getElementById("play")){
     document.getElementById("play").click()
 }})
 
@@ -80,6 +80,10 @@ function start() {
     var drawgrid = true;
     var moveyby = 0;
     var movexby = 10;
+
+    function random(min, max) {
+        return Math.round((Math.random() * (max-min) + min));
+    }    
 
     function randomroundup(min, max) {
         return Math.round((Math.random() * (max-min) + min) / 10) * 10;
@@ -147,11 +151,14 @@ function start() {
 
     var snuke = [{x:30, y:10}, {x: 20, y: 10}, {x: 10, y:10}, {x: 0, y:10}]
 
+    window.snuke = snuke;
+    window.apples = apples;
+
     canvasmanager.addCallBack((ctx) => {
-        // draw lines 
         
+        // draw lines 
         if (drawgrid) {
-            for (var i=0; i<=Math.round(innerWidth/10)*10/10; i++) {
+            for (let i=0; i<=Math.round(innerWidth/10)*10/10; i++) {
                 ctx.fillStyle = "black";
                 ctx.beginPath();
                 ctx.moveTo(i*10,0);
@@ -159,7 +166,7 @@ function start() {
                 ctx.stroke();
             }
 
-            for (var i=0; i<=Math.round(innerHeight/10)*10/10; i++) {
+            for (let i=0; i<=Math.round(innerHeight/10)*10/10; i++) {
                 ctx.fillStyle = "black";
                 ctx.beginPath();
                 ctx.moveTo(0, i*10);
@@ -182,6 +189,10 @@ function start() {
                     snuke.push({x: snuke[snuke.length - 1].x-movexby, y: snuke[snuke.length - 1].y-moveyby}) // add to snake
                     apples.splice(apples.indexOf(apple), 1) // remove apple
                     apples.push({x: randomroundup(0, innerWidth), y: randomroundup(0, innerHeight)}) // make a new apple
+                    if (window.multipleapples == true && apples.length < 12) {
+                        if (random(1, 3) == 3) {apples.push({x: randomroundup(0, innerWidth), y: randomroundup(0, innerHeight)})}
+                        if (random(1, 3) >= 2) {apples.push({x: randomroundup(0, innerWidth), y: randomroundup(0, innerHeight)})}
+                    }
                 }
             })
 
@@ -231,4 +242,4 @@ function start() {
 }
 
 
-document.getElementById("play").onclick = ()=>{start();document.getElementById("snukeholder").remove();}
+document.getElementById("play").onclick = ()=>{start(); window.multipleapples=document.getElementById("applebutton").checked; document.getElementById("snukeholder").remove();}

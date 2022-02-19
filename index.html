@@ -77,6 +77,14 @@
             text-align: center;
             color: white;
         }
+
+        .appletext {
+            color: red;
+        }
+
+        .applebutton {
+            color: red;
+        }
     </style>
 </head>
 
@@ -84,7 +92,9 @@
 <body class="mainbody">
     <div class="snukeholder" id="snukeholder">
         <img class="snukeimg" src="./Snuke V1.png" alt="./Snuke V1.png">
+        <input type="checkbox" name="Multiple Apples" id="applebutton" class="applebutton">
         <input id="play" class="play" type="button" value="Play!">
+        <p class="appletext">Enable Multiple Apples</p> 
         <p>Press E to enable and disable the grid, Press Q to reroll apple position, Press R to restart the game, And Press ESC to pause</p>
     </div>
     <!-- <canvas id="canvas"></canvas> No Longer Needed Due To CanvasManger in main.js -->
