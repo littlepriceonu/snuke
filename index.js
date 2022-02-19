@@ -157,6 +157,18 @@ function start() {
         apples = window.apples;
         snuke = window.snuke;
 
+        apples.forEach((apple) => {
+            if (apple.x + 10 > innerWidth) {
+                let newapple = {x: apple.x-10, y:apple.y}
+                apples[apples.indexOf(apple)] = newapple
+            }
+
+            if (apple.y + 10 > innerHeight) {
+                let newapple = {x: apple.x, y:apple.y-10}
+                apples[apples.indexOf(apple)] = newapple
+            }
+        })
+
         // draw lines 
         if (drawgrid) {
             for (let i=0; i<=Math.round(innerWidth/10)*10/10; i++) {
