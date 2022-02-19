@@ -123,14 +123,13 @@ function start() {
         }
 
         if (e.key == "q") {
-            apples = [{x: randomroundup(0, innerWidth), y: randomroundup(0, innerHeight)}]
+            apples.push({x: randomroundup(0, innerWidth), y: randomroundup(0, innerHeight)})
         }
 
         if (e.key == "r") {
             snuke = [{x:30, y:10}, {x: 20, y: 10}, {x: 10, y:10}, {x: 0, y:10}];// restart snake
             movexby = 10
             moveyby = 0
-            newhead = {x: snuke[0].x+movexby, y: snuke[0].y+moveyby} // Make it so the head is at the new restarted snake
             apples = [{x: randomroundup(0, innerWidth), y: randomroundup(0, innerHeight)}];
         }
 
@@ -151,11 +150,13 @@ function start() {
 
     var snuke = [{x:30, y:10}, {x: 20, y: 10}, {x: 10, y:10}, {x: 0, y:10}]
 
-    window.snuke = snuke;
-    window.apples = apples;
-
     canvasmanager.addCallBack((ctx) => {
-        
+        window.snuke = snuke;
+        window.apples = apples;
+
+        apples = window.apples;
+        snuke = window.snuke;
+
         // draw lines 
         if (drawgrid) {
             for (let i=0; i<=Math.round(innerWidth/10)*10/10; i++) {
@@ -189,7 +190,7 @@ function start() {
                     snuke.push({x: snuke[snuke.length - 1].x-movexby, y: snuke[snuke.length - 1].y-moveyby}) // add to snake
                     apples.splice(apples.indexOf(apple), 1) // remove apple
                     apples.push({x: randomroundup(0, innerWidth), y: randomroundup(0, innerHeight)}) // make a new apple
-                    if (window.multipleapples == true && apples.length < 12) {
+                    if (window.multipleapples && apples.length < 12) {
                         if (random(1, 3) == 3) {apples.push({x: randomroundup(0, innerWidth), y: randomroundup(0, innerHeight)})}
                         if (random(1, 3) >= 2) {apples.push({x: randomroundup(0, innerWidth), y: randomroundup(0, innerHeight)})}
                     }
@@ -217,17 +218,17 @@ function start() {
             ctx.fillRect(apple.x, apple.y, 10, 10);
             ctx.strokeRect(apple.x, apple.y, 10, 10); 
         })
-
+        // check for placement errors 2.0
         snuke.forEach(part => {
             part.y = Math.round(part.y / 10)*10
             part.x = Math.round(part.x / 10)*10
         })
-
+        //move the snake when it hits the border
         snuke.forEach((part) => {
-            if (part.x > innerWidth) {part.x = 0}
-            if (part.x < 0) {part.x = innerWidth}
-            if (part.y > innerHeight) {part.y = 0}
-            if (part.y <0) {part.y = innerHeight}
+            if (part.x > innerWidth || part.x+10 > innerWidth) {part.x = 0}
+            if (part.x < 0 || part.x+10 < 0) {part.x = innerWidth}
+            if (part.y > innerHeight || part.y+10 > innerHeight) {part.y = 0}
+            if (part.y <0 || part.y+10 < 0) {part.y = innerHeight}
         })
         // draw snuke
         snuke.forEach(part => {
@@ -241,5 +242,6 @@ function start() {
     canvasmanager.startUpdate()
 }
 
+document.getElementById("applebutton").checked = true
 
 document.getElementById("play").onclick = ()=>{start(); window.multipleapples=document.getElementById("applebutton").checked; document.getElementById("snukeholder").remove();}
