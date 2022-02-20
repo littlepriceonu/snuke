@@ -1,3 +1,37 @@
+// Todo!
+
+// Make multiplayer work
+
+var deathscreen = document.getElementById("deathscreen");
+
+document.getElementById("deathscreen").style.display="none";
+
+
+// yoinked from https://www.w3schools.com/js/js_cookies.asp
+function setCookie(cname, cvalue, exdays) {
+    const d = new Date();
+    d.setTime(d.getTime() + (exdays*24*60*60*1000));
+    let expires = "expires="+ d.toUTCString();
+    document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/";
+}
+
+// yoinked from https://www.w3schools.com/js/js_cookies.asp
+function getCookie(cname) {
+  let name = cname + "=";
+  let decodedCookie = decodeURIComponent(document.cookie);
+  let ca = decodedCookie.split(';');
+  for(let i = 0; i <ca.length; i++) {
+    let c = ca[i];
+    while (c.charAt(0) == ' ') {
+      c = c.substring(1);
+    }
+    if (c.indexOf(name) == 0) {
+      return c.substring(name.length, c.length);
+    }
+  }
+  return "";
+}
+
 class CanvasManager {
     constructor (Canvas, updateCallBack, clearOnUpdate, paused, updateSpeed, fillStyle) {
         this.canvas = Canvas
@@ -170,6 +204,7 @@ function start() {
         apples = window.apples;
         snuke = window.snuke;
 
+        // make sure apples dont got them placement errors
         apples.forEach((apple) => {
             if (apple.x + 10 > innerWidth) {
                 let newapple = {x: apple.x-10, y:apple.y}
@@ -216,10 +251,15 @@ function start() {
                 if (part.x == apple.x && part.y == apple.y) { 
                     snuke.push({x: snuke[snuke.length - 1].x-movexby, y: snuke[snuke.length - 1].y-moveyby}) // add to snake
                     apples.splice(apples.indexOf(apple), 1) // remove apple
-                    apples.push({x: randomroundup(0, innerWidth), y: randomroundup(0, innerHeight)}) // make a new apple
-                    if (window.multipleapples && apples.length < 12) {
-                        if (random(1, 3) == 3) {apples.push({x: randomroundup(0, innerWidth), y: randomroundup(0, innerHeight)})}
-                        if (random(1, 3) >= 2) {apples.push({x: randomroundup(0, innerWidth), y: randomroundup(0, innerHeight)})}
+                    if (window.multipleapples) {
+                        if (apples.length < 12) {
+                            apples.push({x: randomroundup(0, innerWidth), y: randomroundup(0, innerHeight)}) // make a new apple
+                            if (random(1, 3) == 3) {apples.push({x: randomroundup(0, innerWidth), y: randomroundup(0, innerHeight)})}
+                            if (random(1, 3) >= 2) {apples.push({x: randomroundup(0, innerWidth), y: randomroundup(0, innerHeight)})}
+                        }
+                    }
+                    else {
+                        apples.push({x: randomroundup(0, innerWidth), y: randomroundup(0, innerHeight)}) // make a new apple
                     }
                 }
             })
@@ -228,17 +268,28 @@ function start() {
             if (newhead.x == part.x && newhead.y == part.y) {
                 apples = [{x: randomroundup(0, innerWidth), y: randomroundup(0, innerHeight)}]; // make new apple
                 console.log("dead. snuke:", snuke); // log the snake 
+                if (getCookie("bestscore") != '' && (snuke.length-4) < parseInt(getCookie("bestscore"))) {
+                    document.getElementById("bestscore").textContent ="Your Best Score: "+getCookie("bestscore")
+                }
+                else {
+                    setCookie("bestscore", (snuke.length-4).toString(), 365)
+                    document.getElementById("bestscore").textContent ="Your Best Score: "+getCookie("bestscore")
+                }
+                
+                document.getElementById("score").textContent = "Your Score: " + (snuke.length-4).toString();
                 snuke = [{x:30, y:10}, {x: 20, y: 10}, {x: 10, y:10}, {x: 0, y:10}];// restart snake
                 movexby = 10
                 moveyby = 0
                 newhead = {x: snuke[0].x+movexby, y: snuke[0].y+moveyby} // Make it so the head is at the new restarted snake
+                canvasmanager.paused = true;
+                deathscreen.style.display = "flex";
             }
         })
 
         snuke.pop() // remove the last index in the array
         snuke.unshift(newhead) // add newhead to the front of the array
         // use snuke.push(item) to add to the end of the array
-
+        //draw apples
         apples.forEach(apple => {
             ctx.fillStyle = 'red';
             ctx.strokestyle = 'black';
@@ -266,9 +317,14 @@ function start() {
         })
     })
 
+    document.getElementById("retry").onclick = ()=>{
+        canvasmanager.paused = false;
+        deathscreen.style.display = "none";
+    }
+
     canvasmanager.startUpdate()
 }
 
 document.getElementById("applebutton").checked = true
 
-document.getElementById("play").onclick = ()=>{start(); window.multipleapples=document.getElementById("applebutton").checked; document.getElementById("snukeholder").remove();}
+document.getElementById("play").onclick = ()=>{start();window.multiplayer=document.getElementById("multibutton").checked; window.multipleapples=document.getElementById("applebutton").checked; document.getElementById("snukeholder").remove();}
