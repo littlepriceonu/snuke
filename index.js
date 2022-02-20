@@ -1,5 +1,4 @@
-// Todo!
-
+// TODO
 // Make multiplayer work
 
 var deathscreen = document.getElementById("deathscreen");
