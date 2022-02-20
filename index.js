@@ -89,26 +89,34 @@ function start() {
         return Math.round((Math.random() * (max-min) + min) / 10) * 10;
     }
 
+    var inputhandled = false;
+
     addEventListener("keydown", (e) => {
-        if ((e.key == "w" || e.key == "ArrowUp") && moveyby != 10) {
-            movexby = 0;
-            moveyby = -10;
-        }
+        if (!inputhandled) {
+            if ((e.key == "w" || e.key == "ArrowUp") && moveyby != 10) {
+                movexby = 0;
+                moveyby = -10;
+                inputhandled = true;
+            }
+        
 
+            if ((e.key == "a" || e.key == "ArrowLeft") && movexby != 10) {
+                movexby = -10;
+                moveyby = 0;
+                inputhandled = true;
+            }
 
-        if ((e.key == "a" || e.key == "ArrowLeft") && movexby != 10) {
-            movexby = -10;
-            moveyby = 0;
-        }
+            if ((e.key == "d" || e.key == "ArrowRight") && movexby != -10) {
+                movexby = 10;
+                moveyby = 0;
+                inputhandled = true;
+            }
 
-        if ((e.key == "d" || e.key == "ArrowRight") && movexby != -10) {
-            movexby = 10;
-            moveyby = 0;
-        }
-
-        if ((e.key == "s" || e.key == "ArrowDown") && moveyby != -10) {
-            movexby = 0;
-            moveyby = 10;
+            if ((e.key == "s" || e.key == "ArrowDown") && moveyby != -10) {
+                movexby = 0;
+                moveyby = 10;
+                inputhandled = true;
+            }
         }
 
         if (e.key == "Escape") {
@@ -198,6 +206,8 @@ function start() {
         })
 
         let newhead = {x: snuke[0].x+movexby, y: snuke[0].y+moveyby} // make the new head of the snake
+
+        inputhandled = false;
 
         // check for apple and death
         snuke.forEach(part => {
