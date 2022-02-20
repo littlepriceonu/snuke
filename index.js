@@ -113,6 +113,8 @@ function start() {
     var drawgrid = true;
     var moveyby = 0;
     var movexby = 10;
+    var moveyby2 = 0;
+    var movexby2 = 10;
 
     function random(min, max) {
         return Math.round((Math.random() * (max-min) + min));
@@ -123,32 +125,90 @@ function start() {
     }
 
     var inputhandled = false;
+    var inputhandled2 = false;
 
     addEventListener("keydown", (e) => {
-        if (!inputhandled) {
-            if ((e.key == "w" || e.key == "ArrowUp") && moveyby != 10) {
-                movexby = 0;
-                moveyby = -10;
-                inputhandled = true;
-            }
-        
+        if (!window.multiplayer) {
+            if (!inputhandled) {
+                if ((e.key == "w" || e.key == "ArrowUp") && moveyby != 10) {
+                    movexby = 0;
+                    moveyby = -10;
+                    inputhandled = true;
+                }
+            
 
-            if ((e.key == "a" || e.key == "ArrowLeft") && movexby != 10) {
-                movexby = -10;
-                moveyby = 0;
-                inputhandled = true;
+                if ((e.key == "a" || e.key == "ArrowLeft") && movexby != 10) {
+                    movexby = -10;
+                    moveyby = 0;
+                    inputhandled = true;
+                }
+
+                if ((e.key == "d" || e.key == "ArrowRight") && movexby != -10) {
+                    movexby = 10;
+                    moveyby = 0;
+                    inputhandled = true;
+                }
+
+                if ((e.key == "s" || e.key == "ArrowDown") && moveyby != -10) {
+                    movexby = 0;
+                    moveyby = 10;
+                    inputhandled = true;
+                }
+            }
+        }
+
+        else {
+            if (!inputhandled) {
+                if ((e.key == "w") && moveyby != 10) {
+                    movexby = 0;
+                    moveyby = -10;
+                    inputhandled = true;
+                }
+            
+
+                if ((e.key == "a") && movexby != 10) {
+                    movexby = -10;
+                    moveyby = 0;
+                    inputhandled = true;
+                }
+
+                if ((e.key == "d") && movexby != -10) {
+                    movexby = 10;
+                    moveyby = 0;
+                    inputhandled = true;
+                }
+
+                if ((e.key == "s") && moveyby != -10) {
+                    movexby = 0;
+                    moveyby = 10;
+                    inputhandled = true;
+                }
             }
 
-            if ((e.key == "d" || e.key == "ArrowRight") && movexby != -10) {
-                movexby = 10;
-                moveyby = 0;
-                inputhandled = true;
-            }
+            if (!inputhandled2) {
+                if ((e.key == "ArrowUp") && moveyby2 != 10) {
+                    movexby2 = 0;
+                    moveyby2 = -10;
+                    inputhandled2 = true;
+                }
+            
 
-            if ((e.key == "s" || e.key == "ArrowDown") && moveyby != -10) {
-                movexby = 0;
-                moveyby = 10;
-                inputhandled = true;
+                if ((e.key == "ArrowLeft") && movexby2 != 10) {
+                    movexby2 = -10;
+                    moveyby2 = 0;
+                    inputhandled2 = true;
+                }
+                if ((e.key == "ArrowRight") && movexby2 != -10) {
+                    movexby2 = 10;
+                    moveyby2 = 0;
+                    inputhandled2 = true;
+                }
+
+                if ((e.key == "ArrowDown") && moveyby2 != -10) {
+                    movexby2 = 0;
+                    moveyby2 = 10;
+                    inputhandled2 = true;
+                }
             }
         }
 
@@ -195,12 +255,16 @@ function start() {
 
 
     var snuke = [{x:30, y:10}, {x: 20, y: 10}, {x: 10, y:10}, {x: 0, y:10}]
+    var snuke2 = [{x:30, y:900}, {x: 20, y: 900}, {x: 10, y:900}, {x: 0, y:900}]
+    
 
     canvasmanager.addCallBack((ctx) => {
         window.snuke = snuke;
+        window.snuke2 = snuke2;
         window.apples = apples;
 
         apples = window.apples;
+        snuke2 = window.snuke2;
         snuke = window.snuke;
 
         // make sure apples dont got them placement errors
@@ -240,53 +304,130 @@ function start() {
         })
 
         let newhead = {x: snuke[0].x+movexby, y: snuke[0].y+moveyby} // make the new head of the snake
+        let newhead2 = {x: snuke2[0].x+movexby2, y: snuke2[0].y+moveyby2}
 
         inputhandled = false;
+        inputhandled2 = false;
 
         // check for apple and death
         snuke.forEach(part => {
-            apples.forEach(apple => {
-                // check if snake part is at the same spot as the apple
-                if (part.x == apple.x && part.y == apple.y) { 
-                    snuke.push({x: snuke[snuke.length - 1].x-movexby, y: snuke[snuke.length - 1].y-moveyby}) // add to snake
-                    apples.splice(apples.indexOf(apple), 1) // remove apple
-                    if (window.multipleapples) {
-                        if (apples.length < 12) {
-                            apples.push({x: randomroundup(0, innerWidth), y: randomroundup(0, innerHeight)}) // make a new apple
-                            if (random(1, 3) == 3) {apples.push({x: randomroundup(0, innerWidth), y: randomroundup(0, innerHeight)})}
-                            if (random(1, 3) >= 2) {apples.push({x: randomroundup(0, innerWidth), y: randomroundup(0, innerHeight)})}
+            snuke2.forEach(part2 => {
+                if (!window.multiplayer) {
+                    apples.forEach(apple => {
+                        // check if snake part is at the same spot as the apple
+                        if (part.x == apple.x && part.y == apple.y) { 
+                            snuke.push({x: snuke[snuke.length - 1].x-movexby, y: snuke[snuke.length - 1].y-moveyby}) // add to snake
+                            apples.splice(apples.indexOf(apple), 1) // remove apple
+                            if (window.multipleapples) {
+                                if (apples.length < 12) {
+                                    apples.push({x: randomroundup(0, innerWidth), y: randomroundup(0, innerHeight)}) // make a new apple
+                                    if (random(1, 3) == 3) {apples.push({x: randomroundup(0, innerWidth), y: randomroundup(0, innerHeight)})}
+                                    if (random(1, 3) >= 2) {apples.push({x: randomroundup(0, innerWidth), y: randomroundup(0, innerHeight)})}
+                                }
+                            }
+                            else {
+                                apples.push({x: randomroundup(0, innerWidth), y: randomroundup(0, innerHeight)}) // make a new apple
+                            }
                         }
+                    })
+
+                    // check if the head is at the same spot as the part
+                    if (newhead.x == part.x && newhead.y == part.y) {
+                        apples = [{x: randomroundup(0, innerWidth), y: randomroundup(0, innerHeight)}]; // make new apple
+                        console.log("dead. snuke:", snuke); // log the snake 
+                        if (getCookie("bestscore") != '' && (snuke.length-4) < parseInt(getCookie("bestscore"))) {
+                            document.getElementById("bestscore").textContent ="Your Best Score: "+getCookie("bestscore")
+                        }
+                        else {
+                            setCookie("bestscore", (snuke.length-4).toString(), 365)
+                            document.getElementById("bestscore").textContent ="Your Best Score: "+getCookie("bestscore")
+                        }
+
+                        document.getElementById("score").textContent = "Your Score: " + (snuke.length-4).toString();
+                        snuke = [{x:30, y:10}, {x: 20, y: 10}, {x: 10, y:10}, {x: 0, y:10}];// restart snake
+                        movexby = 10
+                        moveyby = 0
+                        newhead = {x: snuke[0].x+movexby, y: snuke[0].y+moveyby} // Make it so the head is at the new restarted snake
+                        canvasmanager.paused = true;
+                        deathscreen.style.display = "flex";
                     }
-                    else {
-                        apples.push({x: randomroundup(0, innerWidth), y: randomroundup(0, innerHeight)}) // make a new apple
+                }
+
+                else {
+                    apples.forEach(apple => {
+                        // check if snake part is at the same spot as the apple
+                        if (part.x == apple.x && part.y == apple.y) { 
+                            snuke.push({x: snuke[snuke.length - 1].x-movexby, y: snuke[snuke.length - 1].y-moveyby}) // add to snake
+                            apples.splice(apples.indexOf(apple), 1) // remove apple
+                            if (window.multipleapples) {
+                                if (apples.length < 12) {
+                                    apples.push({x: randomroundup(0, innerWidth), y: randomroundup(0, innerHeight)}) // make a new apple
+                                    if (random(1, 3) == 3) {apples.push({x: randomroundup(0, innerWidth), y: randomroundup(0, innerHeight)})}
+                                    if (random(1, 3) >= 2) {apples.push({x: randomroundup(0, innerWidth), y: randomroundup(0, innerHeight)})}
+                                }
+                            }
+                            else {
+                                apples.push({x: randomroundup(0, innerWidth), y: randomroundup(0, innerHeight)}) // make a new apple
+                            }
+                        }
+
+                        if (part2.x == apple.x && part2.y == apple.y) { 
+                            snuke2.push({x: snuke[snuke.length - 1].x-movexby, y: snuke[snuke.length - 1].y-moveyby}) // add to snake
+                            apples.splice(apples.indexOf(apple), 1) // remove apple
+                            if (window.multipleapples) {
+                                if (apples.length < 12) {
+                                    apples.push({x: randomroundup(0, innerWidth), y: randomroundup(0, innerHeight)}) // make a new apple
+                                    if (random(1, 3) == 3) {apples.push({x: randomroundup(0, innerWidth), y: randomroundup(0, innerHeight)})}
+                                    if (random(1, 3) >= 2) {apples.push({x: randomroundup(0, innerWidth), y: randomroundup(0, innerHeight)})}
+                                }
+                            }
+                            else {
+                                apples.push({x: randomroundup(0, innerWidth), y: randomroundup(0, innerHeight)}) // make a new apple
+                            }
+                        }
+                    })
+
+                    // check if the head is at the same spot as the part
+                    if ((newhead.x == part.x && newhead.y == part.y) || (newhead.x == part2.x && newhead.y == part2.y) || (newhead2.x == part.x && newhead2.y == part.y) || (newhead2.x == part2.x && newhead2.y == part2.y)) {
+                        apples = [{x: randomroundup(0, innerWidth), y: randomroundup(0, innerHeight)}]; // make new apple
+                        console.log("dead. snuke:", snuke); // log the snake 
+                        console.log("dead. snuke2:", snuke2)
+                        if (!window.multiplayer) {
+                            if (getCookie("bestscore") != '' && (snuke.length-4) < parseInt(getCookie("bestscore"))) {
+                                document.getElementById("bestscore").textContent ="Your Best Score: "+getCookie("bestscore")
+                            }
+                            else {
+                                setCookie("bestscore", (snuke.length-4).toString(), 365)
+                                document.getElementById("bestscore").textContent ="Your Best Score: "+getCookie("bestscore")
+                            }
+                            document.getElementById("score").textContent = "Your Score: " + (snuke.length-4).toString();
+                        }
+                        else {
+                            if ((snuke.length-4) > (snuke2.length-4)) {document.getElementById("bestscore").textContent ="Green Snuke Wins With A Score Of: " + (snuke.length-4)}
+                            else if ((snuke.length-4) < (snuke2.length-4)) {document.getElementById("bestscore").textContent ="Blue Snuke Wins With A Score Of " + (snuke2.length-4)}
+                            else {document.getElementById("bestscore").textContent ="Tie! You Both Got The Same Score"}
+                            document.getElementById("score").textContent = "Green Snuke Score: " + (snuke.length-4).toString() + "; Blue Snuke Score: " + (snuke2.length-4).toString()
+                        }
+                        snuke = [{x:30, y:10}, {x: 20, y: 10}, {x: 10, y:10}, {x: 0, y:10}];// restart snake
+                        snuke2 = [{x:30, y:900}, {x: 20, y: 900}, {x: 10, y:900}, {x: 0, y:900}]
+                        movexby = 10
+                        moveyby = 0
+                        movexby2 = 10
+                        moveyby2 = 0
+                        newhead = {x: snuke[0].x+movexby, y: snuke[0].y+moveyby}
+                        newhead2 = {x: snuke2[0].x+movexby2, y: snuke2[0].y+moveyby2} // Make it so the head is at the new restarted snake
+                        canvasmanager.paused = true;
+                        deathscreen.style.display = "flex";
                     }
                 }
             })
-
-            // check if the head is at the same spot as the part
-            if (newhead.x == part.x && newhead.y == part.y) {
-                apples = [{x: randomroundup(0, innerWidth), y: randomroundup(0, innerHeight)}]; // make new apple
-                console.log("dead. snuke:", snuke); // log the snake 
-                if (getCookie("bestscore") != '' && (snuke.length-4) < parseInt(getCookie("bestscore"))) {
-                    document.getElementById("bestscore").textContent ="Your Best Score: "+getCookie("bestscore")
-                }
-                else {
-                    setCookie("bestscore", (snuke.length-4).toString(), 365)
-                    document.getElementById("bestscore").textContent ="Your Best Score: "+getCookie("bestscore")
-                }
-                
-                document.getElementById("score").textContent = "Your Score: " + (snuke.length-4).toString();
-                snuke = [{x:30, y:10}, {x: 20, y: 10}, {x: 10, y:10}, {x: 0, y:10}];// restart snake
-                movexby = 10
-                moveyby = 0
-                newhead = {x: snuke[0].x+movexby, y: snuke[0].y+moveyby} // Make it so the head is at the new restarted snake
-                canvasmanager.paused = true;
-                deathscreen.style.display = "flex";
-            }
         })
 
         snuke.pop() // remove the last index in the array
         snuke.unshift(newhead) // add newhead to the front of the array
+
+        snuke2.pop()
+        snuke2.unshift(newhead2)
         // use snuke.push(item) to add to the end of the array
         //draw apples
         apples.forEach(apple => {
@@ -296,18 +437,45 @@ function start() {
             ctx.strokeRect(apple.x, apple.y, 10, 10); 
         })
         // check for placement errors 2.0
+        if (window.multiplayer) {
+            snuke2.forEach(part => {
+                part.y = Math.round(part.y / 10)*10
+                part.x = Math.round(part.x / 10)*10
+            })
+        }
+
         snuke.forEach(part => {
             part.y = Math.round(part.y / 10)*10
             part.x = Math.round(part.x / 10)*10
         })
+
         //move the snake when it hits the border
+        if (window.multiplayer) {
+            snuke2.forEach((part) => {
+                if (part.x > innerWidth || part.x-10 > innerWidth) {part.x = 0}
+                if (part.x < 0 || part.x+10 < 0) {part.x = innerWidth}
+                if (part.y > innerHeight || part.y+10 > innerHeight) {part.y = 0}
+                if (part.y <0 || part.y+10 < 0) {part.y = innerHeight}
+            })
+        }
+
         snuke.forEach((part) => {
             if (part.x > innerWidth || part.x-10 > innerWidth) {part.x = 0}
             if (part.x < 0 || part.x+10 < 0) {part.x = innerWidth}
             if (part.y > innerHeight || part.y+10 > innerHeight) {part.y = 0}
             if (part.y <0 || part.y+10 < 0) {part.y = innerHeight}
         })
+
         // draw snuke
+        if (window.multiplayer) {
+            snuke2.forEach(part => {
+                ctx.fillStyle = 'lightblue';
+                ctx.strokestyle = 'darkgreen';
+                ctx.fillRect(part.x, part.y, 10, 10);
+                ctx.strokeRect(part.x, part.y, 10, 10);
+            })
+        }
+
         snuke.forEach(part => {
             ctx.fillStyle = 'lightgreen';
             ctx.strokestyle = 'darkgreen';
