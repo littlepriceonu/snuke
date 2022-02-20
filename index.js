@@ -242,7 +242,7 @@ function start() {
         })
         //move the snake when it hits the border
         snuke.forEach((part) => {
-            if (part.x > innerWidth || part.x+10 > innerWidth) {part.x = 0}
+            if (part.x > innerWidth || part.x-10 > innerWidth) {part.x = 0}
             if (part.x < 0 || part.x+10 < 0) {part.x = innerWidth}
             if (part.y > innerHeight || part.y+10 > innerHeight) {part.y = 0}
             if (part.y <0 || part.y+10 < 0) {part.y = innerHeight}
