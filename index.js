@@ -123,7 +123,12 @@ function start() {
         }
 
         if (e.key == "q") {
-            apples.push({x: randomroundup(0, innerWidth), y: randomroundup(0, innerHeight)})
+            if (window.multipleapples) {
+                apples.push({x: randomroundup(0, innerWidth), y: randomroundup(0, innerHeight)})
+            }
+            else {
+                apples = [{x: randomroundup(0, innerWidth), y: randomroundup(0, innerHeight)}]
+            }
         }
 
         if (e.key == "r") {
