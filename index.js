@@ -1,5 +1,5 @@
 // TODO
-// Make multiplayer work
+// Make The Snuke Color Changeable even with multiplayer
 
 var deathscreen = document.getElementById("deathscreen");
 
@@ -104,7 +104,7 @@ addEventListener("keydown", (e) => {if (e.key=="Enter" && document.getElementByI
 }})
 
 function start() {
-    const canvasmanager = CanvasManager.createCanvasWithManager('canvas', 'canvas', [], true, false, 100, 'DimGray')
+    var canvasmanager = CanvasManager.createCanvasWithManager('canvas', 'canvas', [], true, false, 100, 'DimGray')
 
     addEventListener("resize", () => {
         canvasmanager.fullScreenCanvas()
@@ -262,7 +262,9 @@ function start() {
         window.snuke = snuke;
         window.snuke2 = snuke2;
         window.apples = apples;
+        window.canvasmanager = canvasmanager;
 
+        canvasmanager = window.canvasmanager;
         apples = window.apples;
         snuke2 = window.snuke2;
         snuke = window.snuke;
@@ -414,6 +416,7 @@ function start() {
                         moveyby = 0
                         movexby2 = 10
                         moveyby2 = 0
+                        inputhandled = false;
                         newhead = {x: snuke[0].x+movexby, y: snuke[0].y+moveyby}
                         newhead2 = {x: snuke2[0].x+movexby2, y: snuke2[0].y+moveyby2} // Make it so the head is at the new restarted snake
                         canvasmanager.paused = true;
@@ -494,4 +497,18 @@ function start() {
 
 document.getElementById("applebutton").checked = true
 
-document.getElementById("play").onclick = ()=>{start();window.multiplayer=document.getElementById("multibutton").checked; window.multipleapples=document.getElementById("applebutton").checked; document.getElementById("snukeholder").remove();}
+document.getElementById("quit").onclick = ()=>{
+    window.canvasmanager.canvas.remove();
+    var canvasmanager = undefined;
+    deathscreen.style.display = "none";
+    document.getElementById("snukeholder").style.display="flex";
+}
+
+document.getElementById("pausedtext").onclick = ()=>{
+    window.canvasmanager.canvas.remove();
+    var canvasmanager = undefined;
+    document.getElementById("pausedtext").style.display="none";
+    document.getElementById("snukeholder").style.display="flex";
+}
+
+document.getElementById("play").onclick = ()=>{start();window.multiplayer=document.getElementById("multibutton").checked; window.multipleapples=document.getElementById("applebutton").checked; document.getElementById("snukeholder").style.display="none";}

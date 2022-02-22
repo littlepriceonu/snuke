@@ -32,6 +32,7 @@
         }
 
         h1.pausedtext {
+            background-color: rgba(0, 0, 0, 0.719);
             z-index: 1;
             display: none;
             font-family:'Courier New', Courier, monospace;
@@ -110,18 +111,28 @@
             color: red;
             font-size:250%;
         }
+
+        p.score {
+            color: rgb(0, 38, 255);
+            font-size:200%;
+        }
+
+        p.bestscore {
+            color: rgb(114, 6, 216);
+            font-size:200%;
+        }
+
         input.retry {
             color: rgb(255, 0, 0);
             background-color: rgb(0, 17, 255);
             font-size: 150%;
         }
-        p.score {
-            color: rgb(0, 38, 255);
-            font-size:200%;
-        }
-        p.bestscore {
-            color: rgb(114, 6, 216);
-            font-size:200%;
+
+        input.quit {
+            color: rgb(255, 0, 0);
+            margin-top:2.5%;
+            background-color: rgb(0, 17, 255);
+            font-size: 150%;
         }
     </style>
 </head>
@@ -143,6 +154,7 @@
         <p class="score" id="score">Your Score: </p>
         <p class="bestscore" id="bestscore">Your Best Score: </p>
         <input type="button" value="Retry" id="retry" class="retry">
+        <input type="button" value="Quit" id="quit" class="quit">
     </div>
     <h1 class="pausedtext" id="pausedtext" >Paused! (Press Escape To Un-Pause)</h1>
 </body>
