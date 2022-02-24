@@ -234,6 +234,9 @@ function start() {
 
         if (e.key == "r") {
             snuke = [{x:30, y:10}, {x: 20, y: 10}, {x: 10, y:10}, {x: 0, y:10}];// restart snake
+            snuke2 = [{x:30, y:900}, {x: 20, y: 900}, {x: 10, y:900}, {x: 0, y:900}]
+            movexby2 = 10
+            moveyby2 = 0
             movexby = 10
             moveyby = 0
             apples = [{x: randomroundup(0, innerWidth), y: randomroundup(0, innerHeight)}];
