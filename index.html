@@ -52,9 +52,7 @@
         }
 
         img.snukeimg {
-            position: relative;
-            top: -15%; 
-            right: 3%;
+            z-index: 1;
         }
 
         input.play {
@@ -65,32 +63,38 @@
             outline: none;
             border: none;
             outline: none;
-            position: relative;
-            top: -30%;
             color:rgb(132, 132, 255);
         }
 
         p {
-            position: relative;
-            bottom: 10%;
-            width: 80%;
             font-size: 130%;
             text-align: center;
             color: white;
         }
 
-        .appletext {
+        p.appletext {
             color: red;
+            margin: 0;
+            margin-top:1%;
         }
 
-        .applebutton {
+        input.applebutton {
             color: red;
-            margin-bottom: 4%;
+            margin-top: 4%;
         }
 
-        .multitext {
-            margin-top: 3%;
+        p.multitext {
+            margin:0;
             color: blue;
+        }
+
+        input.multibutton {
+            margin-top:1%;
+        }
+
+        p.instructiontext {
+            width: 70%;
+            color:plum;
         }
 
         div.deathscreen {
@@ -140,13 +144,13 @@
 
 <body class="mainbody">
     <div class="snukeholder" id="snukeholder">
-        <img class="snukeimg" src="./Snuke V1.png" alt="./Snuke V1.png">
-        <input type="checkbox" name="Multiple Apples" id="applebutton" class="applebutton">
+        <img class="snukeimg" src="./Snuke V2.png" alt="./Snuke V1.png">
         <input id="play" class="play" type="button" value="Play!">
-        <input type="checkbox" name="Local Multiplayer" id="multibutton" class="multibutton">
+        <input type="checkbox" name="Multiple Apples" id="applebutton" class="applebutton">
         <p class="appletext">Enable Multiple Apples</p> 
+        <input type="checkbox" name="Local Multiplayer" id="multibutton" class="multibutton">
         <p class="multitext">Local Multiplayer (Controls Are Arrow Keys for Blue And WASD for Green)</p> 
-        <p>Press Enter To Start, Press E to enable and disable the grid, Press Q to reroll apple position, Press R to restart the game, And Press ESC to pause</p>
+        <p class="instructiontext">Press Enter To Start, Press E to enable and disable the grid, Press Q to reroll apple position, Press R to restart the game, And Press ESC to pause</p>
     </div>
     <!-- <canvas id="canvas"></canvas> No Longer Needed Due To CanvasManger in main.js -->
     <div class="deathscreen" id="deathscreen">
