@@ -1,5 +1,8 @@
 // TODO
 // Make The Snuke Color Changeable even with multiplayer
+// Add barriers that kill you?
+// AI snake branch (just moves randomly) (maybe different difficulty)
+// add help text that says about the "tap to move and dont hold buttons"
 
 var deathscreen = document.getElementById("deathscreen");
 
