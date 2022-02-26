@@ -140,6 +140,26 @@
             background-color: rgb(0, 17, 255);
             font-size: 150%;
         }
+
+        input.snuke1color {
+            margin-top:2%;
+        }
+
+        input.snuke1button {
+            margin-top:1%;
+        }
+
+        input.snuke2color {
+            margin-top:2%;
+        }
+
+        input.snuke2button {
+            margin-top:1%;
+        }
+
+        p.snukecolortext {
+            color:aqua;
+        }
     </style>
 </head>
 
@@ -147,12 +167,25 @@
 <body class="mainbody">
     <div class="snukeholder" id="snukeholder">
         <img class="snukeimg" src="./Snuke V2.png" alt="./Snuke V1.png">
+
         <input id="play" class="play" type="button" value="Play!">
+
         <input type="checkbox" name="Multiple Apples" id="applebutton" class="applebutton">
         <p class="appletext">Enable Multiple Apples</p> 
+
         <input type="checkbox" name="Local Multiplayer" id="multibutton" class="multibutton">
         <p class="multitext">Local Multiplayer (Controls Are Arrow Keys for Blue And WASD for Green)</p> 
+
+        <input type="text" id="snuke1color" class="snuke1color">
+        <input type="button" value="Submit Snuke 1 Color" class="snuke1button" id="snuke1button">
+
+        <input type="text" id="snuke2color" class="snuke2color">
+        <input type="button" value="Submit Snuke 2 Color" class="snuke2button" id="snuke2button">
+
+        <p class="snukecolortext">These Inputs Are To Change The Color Of Your Snuke. It won't work if your color isn't a vaild CSS color</p>
+
         <p class="instructiontext">Press Enter To Start, Press E to enable and disable the grid, Press Q to reroll apple position, Press R to restart the game, And Press ESC to pause</p>
+        <p class="helpfultext">Helpful Tip: When Playing This Game only TAP keys dont hold down any keys. This is just what happens with one of the anti-bug features I implemented</p>
     </div>
     <!-- <canvas id="canvas"></canvas> No Longer Needed Due To CanvasManger in main.js -->
     <div class="deathscreen" id="deathscreen">

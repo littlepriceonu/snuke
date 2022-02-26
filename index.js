@@ -1,13 +1,49 @@
 // TODO
+// Make color save in cookies. Make default color changeable
 // Make The Snuke Color Changeable even with multiplayer
+// Make Settings Menu
 // Add barriers that kill you?
-// AI snake branch (just moves randomly) (maybe different difficulty)
-// add help text that says about the "tap to move and dont hold buttons"
+// AI snake branch (just moves randomly) (maybe different difficulty (how often it moves))
+
+window.isVaildColor = (strColor) => {
+    const s = new Option().style;
+    s.color = strColor;
+    return s.color !== '';
+}
 
 var deathscreen = document.getElementById("deathscreen");
 
 document.getElementById("deathscreen").style.display="none";
 
+var snuke1color = document.getElementById("snuke1color");
+var snuke1colorbutton = document.getElementById("snuke1button");
+
+var snuke2color = document.getElementById("snuke2color");
+var snuke2colorbutton = document.getElementById("snuke2button") ;
+
+window.snuke1defaultcolor = 'lightgreen';
+window.snuke2defaultcolor = 'lightblue';
+
+window.snuke1currentcolor = 'lightgreen';
+window.snuke2currentcolor = 'lightblue';
+
+snuke2colorbutton.onclick = ()=>{
+    if(window.isVaildColor(snuke2color.value)) {
+        window.snuke2currentcolor = snuke2color.value;
+    }
+    else {
+        window.snuke2currentcolor = window.snuke2defaultcolor;
+    }
+}
+
+snuke1colorbutton.onclick = ()=>{
+    if(window.isVaildColor(snuke1color.value)) {
+        window.snuke1currentcolor = snuke1color.value;
+    }
+    else {
+        window.snuke1currentcolor = window.snuke1defaultcolor;
+    }
+}
 
 // yoinked from https://www.w3schools.com/js/js_cookies.asp
 function setCookie(cname, cvalue, exdays) {
@@ -261,7 +297,7 @@ function start() {
 
 
     var snuke = [{x:30, y:10}, {x: 20, y: 10}, {x: 10, y:10}, {x: 0, y:10}]
-    var snuke2 = [{x:30, y:900}, {x: 20, y: 900}, {x: 10, y:900}, {x: 0, y:900}]
+    var snuke2 = [{x:30, y:270}, {x: 20, y: 270}, {x: 10, y:270}, {x: 0, y:270}]
     
 
     canvasmanager.addCallBack((ctx) => {
@@ -411,10 +447,10 @@ function start() {
                             document.getElementById("score").textContent = "Your Score: " + (snuke.length-4).toString();
                         }
                         else {
-                            if ((snuke.length-4) > (snuke2.length-4)) {document.getElementById("bestscore").textContent ="Green Snuke Wins With A Score Of: " + (snuke.length-4)}
-                            else if ((snuke.length-4) < (snuke2.length-4)) {document.getElementById("bestscore").textContent ="Blue Snuke Wins With A Score Of " + (snuke2.length-4)}
+                            if ((snuke.length-4) > (snuke2.length-4)) {document.getElementById("bestscore").textContent ="Snuke 1 Wins With A Score Of: " + (snuke.length-4)}
+                            else if ((snuke.length-4) < (snuke2.length-4)) {document.getElementById("bestscore").textContent ="Snuke 2 Wins With A Score Of " + (snuke2.length-4)}
                             else {document.getElementById("bestscore").textContent ="Tie! You Both Got The Same Score"}
-                            document.getElementById("score").textContent = "Green Snuke Score: " + (snuke.length-4).toString() + "; Blue Snuke Score: " + (snuke2.length-4).toString()
+                            document.getElementById("score").textContent = "Snuke 1 Score: " + (snuke.length-4).toString() + "; Snuke 2 Score: " + (snuke2.length-4).toString()
                         }
                         snuke = [{x:30, y:10}, {x: 20, y: 10}, {x: 10, y:10}, {x: 0, y:10}];// restart snake
                         snuke2 = [{x:30, y:900}, {x: 20, y: 900}, {x: 10, y:900}, {x: 0, y:900}]
@@ -478,7 +514,7 @@ function start() {
         // draw snuke
         if (window.multiplayer) {
             snuke2.forEach(part => {
-                ctx.fillStyle = 'lightblue';
+                ctx.fillStyle = window.snuke2currentcolor;
                 ctx.strokestyle = 'darkgreen';
                 ctx.fillRect(part.x, part.y, 10, 10);
                 ctx.strokeRect(part.x, part.y, 10, 10);
@@ -486,7 +522,7 @@ function start() {
         }
 
         snuke.forEach(part => {
-            ctx.fillStyle = 'lightgreen';
+            ctx.fillStyle = window.snuke1currentcolor;
             ctx.strokestyle = 'darkgreen';
             ctx.fillRect(part.x, part.y, 10, 10);
             ctx.strokeRect(part.x, part.y, 10, 10);
