@@ -1,6 +1,5 @@
 // TODO
-// Make color save in cookies. Make default color changeable
-// Make The Snuke Color Changeable even with multiplayer
+// Make color save in cookies. Make default color changeable?
 // Make Settings Menu
 // Add barriers that kill you?
 // AI snake branch (just moves randomly) (maybe different difficulty (how often it moves))
@@ -10,6 +9,42 @@ window.isVaildColor = (strColor) => {
     s.color = strColor;
     return s.color !== '';
 }
+
+var elementtochange1 = document.getElementById("snuke1color")
+var texttochange1 = document.getElementById("snuke1colortext")
+
+setInterval(()=>{
+    if (isVaildColor(elementtochange1.value)) {
+        elementtochange1.style.color = elementtochange1.value
+        texttochange1.style.color = elementtochange1.value
+    }
+    if (elementtochange1.style.color.includes("light") || elementtochange1.style.color == "white") {
+        elementtochange1.style.backgroundColor = "black"
+        texttochange1.style.color = elementtochange1.value
+    }
+    else {
+        elementtochange1.style.backgroundColor = "white"
+        texttochange1.style.color = elementtochange1.value
+    }
+}, 1)
+
+var elementtochange2 = document.getElementById("snuke2color")
+var texttochange2 = document.getElementById("snuke2colortext")
+
+setInterval(()=>{
+    if (isVaildColor(elementtochange2.value)) {
+        elementtochange2.style.color = elementtochange2.value
+        texttochange2.style.color = elementtochange2.value
+    }
+    if (elementtochange2.style.color.includes("light") || elementtochange2.style.color == "white") {
+        elementtochange2.style.backgroundColor = "black"
+        texttochange2.style.color = elementtochange2.value
+    }
+    else {
+        elementtochange2.style.backgroundColor = "white"
+        texttochange2.style.color = elementtochange2.value
+    }
+}, 1)
 
 var deathscreen = document.getElementById("deathscreen");
 
@@ -26,24 +61,6 @@ window.snuke2defaultcolor = 'lightblue';
 
 window.snuke1currentcolor = 'lightgreen';
 window.snuke2currentcolor = 'lightblue';
-
-snuke2colorbutton.onclick = ()=>{
-    if(window.isVaildColor(snuke2color.value)) {
-        window.snuke2currentcolor = snuke2color.value;
-    }
-    else {
-        window.snuke2currentcolor = window.snuke2defaultcolor;
-    }
-}
-
-snuke1colorbutton.onclick = ()=>{
-    if(window.isVaildColor(snuke1color.value)) {
-        window.snuke1currentcolor = snuke1color.value;
-    }
-    else {
-        window.snuke1currentcolor = window.snuke1defaultcolor;
-    }
-}
 
 // yoinked from https://www.w3schools.com/js/js_cookies.asp
 function setCookie(cname, cvalue, exdays) {
@@ -143,6 +160,20 @@ addEventListener("keydown", (e) => {if (e.key=="Enter" && document.getElementByI
 }})
 
 function start() {
+    if(window.isVaildColor(snuke2color.value)) {
+        window.snuke2currentcolor = snuke2color.value;
+    }
+    else {
+        window.snuke2currentcolor = window.snuke2defaultcolor;
+    }
+
+    if(window.isVaildColor(snuke1color.value)) {
+        window.snuke1currentcolor = snuke1color.value;
+    }
+    else {
+        window.snuke1currentcolor = window.snuke1defaultcolor;
+    }
+
     var canvasmanager = CanvasManager.createCanvasWithManager('canvas', 'canvas', [], true, false, 100, 'DimGray')
 
     addEventListener("resize", () => {
