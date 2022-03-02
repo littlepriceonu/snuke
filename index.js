@@ -3,12 +3,39 @@
 // Make Settings Menu
 // Add barriers that kill you?
 // AI snake branch (just moves randomly) (maybe different difficulty (how often it moves))
+// Timed Mode
+// Finish Color Mode
 
 window.isVaildColor = (strColor) => {
     const s = new Option().style;
     s.color = strColor;
     return s.color !== '';
 }
+
+var imagetoggle = document.getElementById("imageactivation")
+var snuke1imageinput = document.getElementById("snuke1image")
+var appleimageinput = document.getElementById("appleimage")
+
+var imagemodeon = false
+window.imagemodeon  = false
+
+imagetoggle.onclick = () => {
+    if (imagemodeon) {
+        imagetoggle.style.backgroundColor = "indianred"
+        snuke1imageinput.style.display = "none";
+        appleimageinput.style.display = "none";
+        window.imagemodeon = false
+    }
+    else {
+        imagetoggle.style.backgroundColor = "lightgreen"
+        snuke1imageinput.style.display = "block";
+        appleimageinput.style.display = "block";
+        window.imagemodeon = true
+    }
+}
+
+snuke1imageinput.style.display = "none";
+appleimageinput.style.display = "none";
 
 var elementtochange1 = document.getElementById("snuke1color")
 var texttochange1 = document.getElementById("snuke1colortext")
@@ -147,6 +174,25 @@ class CanvasManager {
         canvas.height = innerHeight
         canvas.id = id
         canvas.className = className
+    }
+}
+
+class CanvasImage {
+    constructor (src, width, height, x, y) {
+        this.image = new Image(width, height);
+        this.image.src = src;
+        this.width = width;
+        this.height = height;
+        this.x = x;
+        this.y = y;
+    }
+
+    changeImage (src) {
+        this.image.src = src
+    }
+
+    draw(ctx) {
+        ctx.drawImage(this.image, this.x, this.y, this.width, this.height)
     }
 }
 

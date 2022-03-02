@@ -163,6 +163,14 @@
         p.snukecolortext {
             color:aqua;
         }
+
+        input.imageactivation {
+            margin-top: 2%;
+        }
+
+        input.imageinput {
+            margin-top: 1%;
+        }
     </style>
 </head>
 
@@ -179,12 +187,14 @@
         <input type="checkbox" name="Local Multiplayer" id="multibutton" class="multibutton">
         <p class="multitext">Local Multiplayer (Controls Are Arrow Keys for Blue And WASD for Green)</p> 
 
+        <input class="imageactivation" id="imageactivation" type="button" value="Toggle Image Mode" style="background-color: indianred; color: rgb(52, 0, 112)">
+        <input type="text" class="snuke1image imageinput" id="snuke1image" placeholder="Snuke 1 image">
+        <input type="text" class="appleimage imageinput" id="appleimage" placeholder="Apple image">
+
         <p class="snuke1colortext" id="snuke1colortext">Change Snuke 1 Color</p>
         <input type="text" id="snuke1color" class="snuke1color">
-
         <p class="snuke2colortext" id="snuke2colortext">Change Snuke 2 Color</p>
         <input type="text" id="snuke2color" class="snuke2color">
-
         <p class="snukecolortext">These Inputs Are To Change The Color Of Your Snuke. It won't work if your color isn't a vaild CSS color</p>
 
         <p class="instructiontext">Press Enter To Start, Press E to enable and disable the grid, Press Q to reroll apple position, Press R to restart the game, And Press ESC to pause</p>
