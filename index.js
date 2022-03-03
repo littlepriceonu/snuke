@@ -3,7 +3,7 @@
 // Make Settings Menu
 // Add barriers that kill you?
 // AI snake branch (just moves randomly) (maybe different difficulty (how often it moves))
-// Timed Mode <---- !!!!!!!!!
+// work on the Die and then press R glitch
 
 window.isVaildColor = (strColor) => {
     const s = new Option().style;
