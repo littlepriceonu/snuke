@@ -4,6 +4,7 @@
     <link rel="icon" type="image/x-icon" href="/favicon/favicon.ico">
 
     <style>
+        @import url('https://fonts.googleapis.com/css2?family=PT+Sans+Narrow:wght@400;700&display=swap');
         .mainbody {
             display: flex;
             align-items: center;
@@ -164,18 +165,37 @@
             color:aqua;
         }
 
-        input.imageactivation {
-            margin-top: 2%;
+        div.overlay {
+            display: none;
+            justify-content:center;
+            align-items:flex-start;
+            z-index: 1;
+            position: relative;
+            left:0;
+            top:0;
+            margin:0;
+            width:100%;
+            height:100%;
         }
 
-        input.imageinput {
+        input.toggletimedmode {
             margin-top: 1%;
+            color: red;
+        }
+
+        h1.time {
+            font-family: 'PT Sans Narrow', sans-serif;
+            color: white;
         }
     </style>
 </head>
 
 
 <body class="mainbody">
+    <div class="overlay" id="overlay">
+        <h1 class="time" id="time">150</h1>
+    </div>
+
     <div class="snukeholder" id="snukeholder">
         <img class="snukeimg" src="./Snuke V2.png" alt="./Snuke V1.png">
 
@@ -187,9 +207,7 @@
         <input type="checkbox" name="Local Multiplayer" id="multibutton" class="multibutton">
         <p class="multitext">Local Multiplayer (Controls Are Arrow Keys for Blue And WASD for Green)</p> 
 
-        <input class="imageactivation" id="imageactivation" type="button" value="Toggle Image Mode" style="background-color: indianred; color: rgb(52, 0, 112)">
-        <input type="text" class="snuke1image imageinput" id="snuke1image" placeholder="Snuke 1 image">
-        <input type="text" class="appleimage imageinput" id="appleimage" placeholder="Apple image">
+        <input type="button" value="Toggle Timed Mode" class="toggletimedmode" id="toggletimedmode">
 
         <p class="snuke1colortext" id="snuke1colortext">Change Snuke 1 Color</p>
         <input type="text" id="snuke1color" class="snuke1color">

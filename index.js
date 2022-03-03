@@ -3,39 +3,13 @@
 // Make Settings Menu
 // Add barriers that kill you?
 // AI snake branch (just moves randomly) (maybe different difficulty (how often it moves))
-// Timed Mode
-// Finish Color Mode
+// Timed Mode <---- !!!!!!!!!
 
 window.isVaildColor = (strColor) => {
     const s = new Option().style;
     s.color = strColor;
     return s.color !== '';
 }
-
-var imagetoggle = document.getElementById("imageactivation")
-var snuke1imageinput = document.getElementById("snuke1image")
-var appleimageinput = document.getElementById("appleimage")
-
-var imagemodeon = false
-window.imagemodeon  = false
-
-imagetoggle.onclick = () => {
-    if (imagemodeon) {
-        imagetoggle.style.backgroundColor = "indianred"
-        snuke1imageinput.style.display = "none";
-        appleimageinput.style.display = "none";
-        window.imagemodeon = false
-    }
-    else {
-        imagetoggle.style.backgroundColor = "lightgreen"
-        snuke1imageinput.style.display = "block";
-        appleimageinput.style.display = "block";
-        window.imagemodeon = true
-    }
-}
-
-snuke1imageinput.style.display = "none";
-appleimageinput.style.display = "none";
 
 var elementtochange1 = document.getElementById("snuke1color")
 var texttochange1 = document.getElementById("snuke1colortext")
@@ -114,6 +88,21 @@ function getCookie(cname) {
   return "";
 }
 
+var timedmode = false;
+window.timedmode = false;
+document.getElementById("toggletimedmode").onclick = ()=>{
+    if (timedmode) {
+        document.getElementById("toggletimedmode").style.color = "red";
+        timedmode = false;
+        window.timedmode = false;
+    }
+    else {
+        document.getElementById("toggletimedmode").style.color = "green";
+        timedmode = true;
+        window.timedmode = true;
+    }
+
+}
 class CanvasManager {
     constructor (Canvas, updateCallBack, clearOnUpdate, paused, updateSpeed, fillStyle) {
         this.canvas = Canvas
@@ -194,6 +183,10 @@ class CanvasImage {
     draw(ctx) {
         ctx.drawImage(this.image, this.x, this.y, this.width, this.height)
     }
+
+    drawxy(ctx, x, y) {
+        ctx.drawImage(this.image, x, y, this.width, this.height)
+    }
 }
 
 /* 
@@ -206,6 +199,34 @@ addEventListener("keydown", (e) => {if (e.key=="Enter" && document.getElementByI
 }})
 
 function start() {
+    if (timedmode) {
+        document.getElementById("overlay").style.display = "flex"
+        var time = document.getElementById("time");
+        window.timeintervalstarted = true
+        var timeinterval = setInterval(() => {
+            window.timeintervalstarted = true
+            if (!parseInt(time.innerText) == 0) {
+                time.innerText = (parseInt(time.innerText)-1).toString()
+            }
+            else {
+                snuke = [{x:30, y:10}, {x: 20, y: 10}, {x: 10, y:10}, {x: 0, y:10}];// restart snake
+                snuke2 = [{x:30, y:900}, {x: 20, y: 900}, {x: 10, y:900}, {x: 0, y:900}]
+                movexby = 10
+                moveyby = 0
+                movexby2 = 10
+                moveyby2 = 0
+                inputhandled = false;
+                inputhandled2 = false;
+                canvasmanager.paused = true;
+                deathscreen.style.display = "flex";
+                document.getElementById("overlay").style.display = "none"
+                document.getElementById("time").innerText = "150"
+                clearInterval(timeinterval);
+                window.timeintervalstarted = false;
+            }
+        }, 1000);
+    }
+
     if(window.isVaildColor(snuke2color.value)) {
         window.snuke2currentcolor = snuke2color.value;
     }
@@ -355,6 +376,10 @@ function start() {
             moveyby2 = 0
             movexby = 10
             moveyby = 0
+            if (timedmode) {
+                document.getElementById("overlay").style.display = "flex"
+                document.getElementById("time").innerText = "150"
+            }
             apples = [{x: randomroundup(0, innerWidth), y: randomroundup(0, innerHeight)}];
         }
 
@@ -378,6 +403,33 @@ function start() {
     
 
     canvasmanager.addCallBack((ctx) => {
+        if (timedmode) {
+            if (!window.timeintervalstarted) {
+                window.timeintervalstarted = true
+                var timeinterval = setInterval(() => {
+                    window.timeintervalstarted = true
+                    if (!parseInt(time.innerText) == 0) {
+                        time.innerText = (parseInt(time.innerText)-1).toString()
+                    }
+                    else {
+                        snuke = [{x:30, y:10}, {x: 20, y: 10}, {x: 10, y:10}, {x: 0, y:10}];// restart snake
+                        snuke2 = [{x:30, y:900}, {x: 20, y: 900}, {x: 10, y:900}, {x: 0, y:900}]
+                        movexby = 10
+                        moveyby = 0
+                        movexby2 = 10
+                        moveyby2 = 0
+                        inputhandled = false;
+                        inputhandled2 = false;
+                        canvasmanager.paused = true;
+                        deathscreen.style.display = "flex";
+                        document.getElementById("overlay").style.display = "none"
+                        document.getElementById("time").innerText = "150"
+                        clearInterval(timeinterval);
+                        window.timeintervalstarted = false;
+                    }
+                }, 1000)
+            }
+        }
         window.snuke = snuke;
         window.snuke2 = snuke2;
         window.apples = apples;
@@ -408,6 +460,7 @@ function start() {
                 ctx.beginPath();
                 ctx.moveTo(i*10,0);
                 ctx.lineTo(i*10, innerHeight);
+                ctx.strokeStyle = "black";
                 ctx.stroke();
             }
 
@@ -416,6 +469,7 @@ function start() {
                 ctx.beginPath();
                 ctx.moveTo(0, i*10);
                 ctx.lineTo(innerWidth, i*10);
+                ctx.strokeStyle = "black";
                 ctx.stroke();
             }
         }
@@ -455,6 +509,10 @@ function start() {
                     // check if the head is at the same spot as the part
                     if (newhead.x == part.x && newhead.y == part.y) {
                         apples = [{x: randomroundup(0, innerWidth), y: randomroundup(0, innerHeight)}]; // make new apple
+                        if (timedmode) {
+                            document.getElementById("overlay").style.display = "none"
+                            document.getElementById("time").innerText = "150"
+                        }
                         console.log("dead. snuke:", snuke); // log the snake 
                         if (getCookie("bestscore") != '' && (snuke.length-4) < parseInt(getCookie("bestscore"))) {
                             document.getElementById("bestscore").textContent ="Your Best Score: "+getCookie("bestscore")
@@ -513,6 +571,9 @@ function start() {
                         apples = [{x: randomroundup(0, innerWidth), y: randomroundup(0, innerHeight)}]; // make new apple
                         console.log("dead. snuke:", snuke); // log the snake 
                         console.log("dead. snuke2:", snuke2)
+                        if (timedmode) {
+                            document.getElementById("overlay").style.display = "none"
+                        }
                         if (!window.multiplayer) {
                             if (getCookie("bestscore") != '' && (snuke.length-4) < parseInt(getCookie("bestscore"))) {
                                 document.getElementById("bestscore").textContent ="Your Best Score: "+getCookie("bestscore")
@@ -540,6 +601,7 @@ function start() {
                         newhead2 = {x: snuke2[0].x+movexby2, y: snuke2[0].y+moveyby2} // Make it so the head is at the new restarted snake
                         canvasmanager.paused = true;
                         deathscreen.style.display = "flex";
+                        document.getElementById("time").innerText = "150"
                     }
                 }
             })
@@ -554,7 +616,7 @@ function start() {
         //draw apples
         apples.forEach(apple => {
             ctx.fillStyle = 'red';
-            ctx.strokestyle = 'black';
+            ctx.strokeStyle = 'black';
             ctx.fillRect(apple.x, apple.y, 10, 10);
             ctx.strokeRect(apple.x, apple.y, 10, 10); 
         })
@@ -592,7 +654,7 @@ function start() {
         if (window.multiplayer) {
             snuke2.forEach(part => {
                 ctx.fillStyle = window.snuke2currentcolor;
-                ctx.strokestyle = 'darkgreen';
+                ctx.strokeStyle = 'darkgreen';
                 ctx.fillRect(part.x, part.y, 10, 10);
                 ctx.strokeRect(part.x, part.y, 10, 10);
             })
@@ -600,7 +662,7 @@ function start() {
 
         snuke.forEach(part => {
             ctx.fillStyle = window.snuke1currentcolor;
-            ctx.strokestyle = 'darkgreen';
+            ctx.strokeStyle = 'darkgreen';
             ctx.fillRect(part.x, part.y, 10, 10);
             ctx.strokeRect(part.x, part.y, 10, 10);
         })
@@ -609,6 +671,8 @@ function start() {
     document.getElementById("retry").onclick = ()=>{
         canvasmanager.paused = false;
         deathscreen.style.display = "none";
+        document.getElementById("overlay").style.display = "flex"
+        timedmode
     }
 
     canvasmanager.startUpdate()
