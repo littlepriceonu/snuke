@@ -3,7 +3,14 @@
 // Make Settings Menu
 // Add barriers that kill you?
 // AI snake branch (just moves randomly) (maybe different difficulty (how often it moves))
-// work on the Die and then press R glitch
+// work on the Die and then press R glitch>?
+
+document.getElementById("brainmode").onclick = ()=>{
+    document.querySelector("#snuke1color").value =  "pink"
+    document.querySelector("#toggletimedmode").click()
+    document.querySelector("#play").click()
+    window.brainmode = true
+}
 
 window.isVaildColor = (strColor) => {
     const s = new Option().style;
@@ -124,7 +131,7 @@ class CanvasManager {
             }
 
             for (let i=0; i < this.updatecallback.length; i++) {
-                this.updatecallback[i](this.ctx)
+                this.updatecallback[i](this.ctx);
             }
         }
     }
@@ -198,6 +205,15 @@ addEventListener("keydown", (e) => {if (e.key=="Enter" && document.getElementByI
     document.getElementById("play").click()
 }})
 
+function random(min, max) {
+    return Math.round((Math.random() * (max-min) + min));
+}    
+
+function randomroundup(min, max) {
+    return Math.round((Math.random() * (max-min) + min) / 10) * 10;
+}
+
+
 function start() {
     if (timedmode) {
         document.getElementById("overlay").style.display = "flex"
@@ -252,14 +268,6 @@ function start() {
     var movexby = 10;
     var moveyby2 = 0;
     var movexby2 = 10;
-
-    function random(min, max) {
-        return Math.round((Math.random() * (max-min) + min));
-    }    
-
-    function randomroundup(min, max) {
-        return Math.round((Math.random() * (max-min) + min) / 10) * 10;
-    }
 
     var inputhandled = false;
     var inputhandled2 = false;
@@ -615,10 +623,20 @@ function start() {
         // use snuke.push(item) to add to the end of the array
         //draw apples
         apples.forEach(apple => {
-            ctx.fillStyle = 'red';
-            ctx.strokeStyle = 'black';
-            ctx.fillRect(apple.x, apple.y, 10, 10);
-            ctx.strokeRect(apple.x, apple.y, 10, 10); 
+            if (window.brainmode) {
+                if (window.globalcolor == 1) ctx.fillStyle = 'red';
+                if (window.globalcolor == 2) ctx.fillStyle = 'blue';
+                if (window.globalcolor == 3) ctx.fillStyle = 'white';
+                ctx.strokeStyle = 'black';
+                ctx.fillRect(apple.x, apple.y, 10, 10);
+                ctx.strokeRect(apple.x, apple.y, 10, 10); 
+            }
+            else {
+                ctx.fillStyle = 'red';
+                ctx.strokeStyle = 'black';
+                ctx.fillRect(apple.x, apple.y, 10, 10);
+                ctx.strokeRect(apple.x, apple.y, 10, 10); 
+            }
         })
         // check for placement errors 2.0
         if (window.multiplayer) {
@@ -662,7 +680,12 @@ function start() {
 
         snuke.forEach(part => {
             ctx.fillStyle = window.snuke1currentcolor;
+            if (window.brainmode) {
+                ctx.strokeStyle = 'black';
+            }
+            else {
             ctx.strokeStyle = 'darkgreen';
+            }
             ctx.fillRect(part.x, part.y, 10, 10);
             ctx.strokeRect(part.x, part.y, 10, 10);
         })
@@ -672,7 +695,6 @@ function start() {
         canvasmanager.paused = false;
         deathscreen.style.display = "none";
         document.getElementById("overlay").style.display = "flex"
-        timedmode
     }
 
     canvasmanager.startUpdate()
@@ -693,5 +715,9 @@ document.getElementById("pausedtext").onclick = ()=>{
     document.getElementById("pausedtext").style.display="none";
     document.getElementById("snukeholder").style.display="flex";
 }
+
+setInterval(()=>{
+    window.globalcolor = random(1, 3)
+}, 700)
 
 document.getElementById("play").onclick = ()=>{start();window.multiplayer=document.getElementById("multibutton").checked; window.multipleapples=document.getElementById("applebutton").checked; document.getElementById("snukeholder").style.display="none";}
