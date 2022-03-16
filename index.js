@@ -3,14 +3,7 @@
 // Make Settings Menu
 // Add barriers that kill you?
 // AI snake branch (just moves randomly) (maybe different difficulty (how often it moves))
-// work on the Die and then press R glitch>?
-
-document.getElementById("brainmode").onclick = ()=>{
-    document.querySelector("#snuke1color").value =  "pink"
-    document.querySelector("#toggletimedmode").click()
-    document.querySelector("#play").click()
-    window.brainmode = true
-}
+// Make it so the death screen apears on Restart "r"
 
 window.isVaildColor = (strColor) => {
     const s = new Option().style;
@@ -218,9 +211,9 @@ function start() {
     if (timedmode) {
         document.getElementById("overlay").style.display = "flex"
         var time = document.getElementById("time");
-        window.timeintervalstarted = true
-        var timeinterval = setInterval(() => {
-            window.timeintervalstarted = true
+        clearInterval(window.timeinterval);
+        window.timeinterval = setInterval(() => {
+            window.window.timeintervalstarted = true
             if (!parseInt(time.innerText) == 0) {
                 time.innerText = (parseInt(time.innerText)-1).toString()
             }
@@ -237,8 +230,8 @@ function start() {
                 deathscreen.style.display = "flex";
                 document.getElementById("overlay").style.display = "none"
                 document.getElementById("time").innerText = "150"
-                clearInterval(timeinterval);
-                window.timeintervalstarted = false;
+                console.log("window.timeinterval terminated")
+                clearInterval(window.timeinterval);
             }
         }, 1000);
     }
@@ -378,17 +371,19 @@ function start() {
         }
 
         if (e.key == "r") {
-            snuke = [{x:30, y:10}, {x: 20, y: 10}, {x: 10, y:10}, {x: 0, y:10}];// restart snake
-            snuke2 = [{x:30, y:900}, {x: 20, y: 900}, {x: 10, y:900}, {x: 0, y:900}]
-            movexby2 = 10
-            moveyby2 = 0
-            movexby = 10
-            moveyby = 0
-            if (timedmode) {
-                document.getElementById("overlay").style.display = "flex"
-                document.getElementById("time").innerText = "150"
+                if (!canvasmanager.paused) {
+                snuke = [{x:30, y:10}, {x: 20, y: 10}, {x: 10, y:10}, {x: 0, y:10}];// restart snake
+                snuke2 = [{x:30, y:900}, {x: 20, y: 900}, {x: 10, y:900}, {x: 0, y:900}]
+                movexby2 = 10
+                moveyby2 = 0
+                movexby = 10
+                moveyby = 0
+                if (timedmode) {
+                    document.getElementById("overlay").style.display = "flex"
+                    document.getElementById("time").innerText = "150"
+                }
+                apples = [{x: randomroundup(0, innerWidth), y: randomroundup(0, innerHeight)}];
             }
-            apples = [{x: randomroundup(0, innerWidth), y: randomroundup(0, innerHeight)}];
         }
 
         if (e.key == "e") {
@@ -411,33 +406,6 @@ function start() {
     
 
     canvasmanager.addCallBack((ctx) => {
-        if (timedmode) {
-            if (!window.timeintervalstarted) {
-                window.timeintervalstarted = true
-                var timeinterval = setInterval(() => {
-                    window.timeintervalstarted = true
-                    if (!parseInt(time.innerText) == 0) {
-                        time.innerText = (parseInt(time.innerText)-1).toString()
-                    }
-                    else {
-                        snuke = [{x:30, y:10}, {x: 20, y: 10}, {x: 10, y:10}, {x: 0, y:10}];// restart snake
-                        snuke2 = [{x:30, y:900}, {x: 20, y: 900}, {x: 10, y:900}, {x: 0, y:900}]
-                        movexby = 10
-                        moveyby = 0
-                        movexby2 = 10
-                        moveyby2 = 0
-                        inputhandled = false;
-                        inputhandled2 = false;
-                        canvasmanager.paused = true;
-                        deathscreen.style.display = "flex";
-                        document.getElementById("overlay").style.display = "none"
-                        document.getElementById("time").innerText = "150"
-                        clearInterval(timeinterval);
-                        window.timeintervalstarted = false;
-                    }
-                }, 1000)
-            }
-        }
         window.snuke = snuke;
         window.snuke2 = snuke2;
         window.apples = apples;
@@ -534,6 +502,8 @@ function start() {
                         snuke = [{x:30, y:10}, {x: 20, y: 10}, {x: 10, y:10}, {x: 0, y:10}];// restart snake
                         movexby = 10
                         moveyby = 0
+                        console.log("window.timeinterval terminated")
+                        clearInterval(window.timeinterval)
                         newhead = {x: snuke[0].x+movexby, y: snuke[0].y+moveyby} // Make it so the head is at the new restarted snake
                         canvasmanager.paused = true;
                         deathscreen.style.display = "flex";
@@ -576,6 +546,7 @@ function start() {
 
                     // check if the head is at the same spot as the part
                     if ((newhead.x == part.x && newhead.y == part.y) || (newhead.x == part2.x && newhead.y == part2.y) || (newhead2.x == part.x && newhead2.y == part.y) || (newhead2.x == part2.x && newhead2.y == part2.y)) {
+                        // The Snuke Died
                         apples = [{x: randomroundup(0, innerWidth), y: randomroundup(0, innerHeight)}]; // make new apple
                         console.log("dead. snuke:", snuke); // log the snake 
                         console.log("dead. snuke2:", snuke2)
@@ -607,6 +578,10 @@ function start() {
                         inputhandled = false;
                         newhead = {x: snuke[0].x+movexby, y: snuke[0].y+moveyby}
                         newhead2 = {x: snuke2[0].x+movexby2, y: snuke2[0].y+moveyby2} // Make it so the head is at the new restarted snake
+                        console.log("window.timeinterval :")
+                        console.log(window.timeinterval)
+                        console.log("window.timeinterval terminated")
+                        clearInterval(window.timeinterval)
                         canvasmanager.paused = true;
                         deathscreen.style.display = "flex";
                         document.getElementById("time").innerText = "150"
@@ -623,20 +598,10 @@ function start() {
         // use snuke.push(item) to add to the end of the array
         //draw apples
         apples.forEach(apple => {
-            if (window.brainmode) {
-                if (window.globalcolor == 1) ctx.fillStyle = 'red';
-                if (window.globalcolor == 2) ctx.fillStyle = 'blue';
-                if (window.globalcolor == 3) ctx.fillStyle = 'white';
-                ctx.strokeStyle = 'black';
-                ctx.fillRect(apple.x, apple.y, 10, 10);
-                ctx.strokeRect(apple.x, apple.y, 10, 10); 
-            }
-            else {
-                ctx.fillStyle = 'red';
-                ctx.strokeStyle = 'black';
-                ctx.fillRect(apple.x, apple.y, 10, 10);
-                ctx.strokeRect(apple.x, apple.y, 10, 10); 
-            }
+            ctx.fillStyle = 'red';
+            ctx.strokeStyle = 'black';
+            ctx.fillRect(apple.x, apple.y, 10, 10);
+            ctx.strokeRect(apple.x, apple.y, 10, 10); 
         })
         // check for placement errors 2.0
         if (window.multiplayer) {
@@ -680,12 +645,7 @@ function start() {
 
         snuke.forEach(part => {
             ctx.fillStyle = window.snuke1currentcolor;
-            if (window.brainmode) {
-                ctx.strokeStyle = 'black';
-            }
-            else {
             ctx.strokeStyle = 'darkgreen';
-            }
             ctx.fillRect(part.x, part.y, 10, 10);
             ctx.strokeRect(part.x, part.y, 10, 10);
         })
@@ -695,6 +655,31 @@ function start() {
         canvasmanager.paused = false;
         deathscreen.style.display = "none";
         document.getElementById("overlay").style.display = "flex"
+        if (timedmode) {
+            clearInterval(window.timeinterval);
+            window.timeinterval = setInterval(() => {
+                window.window.timeintervalstarted = true
+                if (!parseInt(time.innerText) == 0) {
+                    time.innerText = (parseInt(time.innerText)-1).toString()
+                }
+                else {
+                    snuke = [{x:30, y:10}, {x: 20, y: 10}, {x: 10, y:10}, {x: 0, y:10}];// restart snake
+                    snuke2 = [{x:30, y:900}, {x: 20, y: 900}, {x: 10, y:900}, {x: 0, y:900}]
+                    movexby = 10
+                    moveyby = 0
+                    movexby2 = 10
+                    moveyby2 = 0
+                    inputhandled = false;
+                    inputhandled2 = false;
+                    canvasmanager.paused = true;
+                    deathscreen.style.display = "flex";
+                    document.getElementById("overlay").style.display = "none"
+                    document.getElementById("time").innerText = "150"
+                    console.log("window.timeinterval terminated")
+                    clearInterval(window.timeinterval);
+                }
+            }, 1000);
+        }
     }
 
     canvasmanager.startUpdate()
@@ -704,6 +689,7 @@ document.getElementById("applebutton").checked = true
 
 document.getElementById("quit").onclick = ()=>{
     window.canvasmanager.canvas.remove();
+    clearInterval(window.timeinterval)
     var canvasmanager = undefined;
     deathscreen.style.display = "none";
     document.getElementById("snukeholder").style.display="flex";
