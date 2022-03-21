@@ -187,6 +187,38 @@
             font-family: 'PT Sans Narrow', sans-serif;
             color: white;
         }
+
+        .settings {
+            margin-top: 2%;
+            width:4%;
+            height:5%;
+            cursor:pointer;
+        }
+
+        div.settingsmenu {
+            position: absolute;
+            width:50%;
+            height:50%;
+            background-color: black;
+            left:50%;
+            top:50%;
+            z-index: 2;
+            transform: translate(-50%, -50%);
+            display: none;
+            gap: 1%;
+            column-count: 3;
+            grid-column-start: 1;
+            grid-column-end: 3;
+            grid-template-columns: auto auto auto;
+        }
+
+        div.griditem{
+            size: auto;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content:center;
+        }
     </style>
 </head>
 
@@ -196,16 +228,27 @@
         <h1 class="time" id="time">150</h1>
     </div>
 
+    <div class="settingsmenu" id="settingsmenu">
+        <div class="griditem">
+            <input type="checkbox" name="Multiple Apples" id="applebutton" class="applebutton">
+            <p class="appletext">Enable Multiple Apples</p> 
+        </div>
+        <div class="griditem">
+            <input type="checkbox" name="Local Multiplayer" id="multibutton" class="multibutton">
+            <p class="multitext">Local Multiplayer</p> 
+            <p class="multitext">(Arrow keys & WASD)</p> 
+        </div>
+        <div class="griditem">
+            <input type="button" value="Close Settings" id="closesettings" class="closesettings">
+        </div>
+    </div>
+
     <div class="snukeholder" id="snukeholder">
         <img class="snukeimg" src="./Snuke V2.png" alt="./Snuke V1.png">
 
         <input id="play" class="play" type="button" value="Play!">
 
-        <input type="checkbox" name="Multiple Apples" id="applebutton" class="applebutton">
-        <p class="appletext">Enable Multiple Apples</p> 
-
-        <input type="checkbox" name="Local Multiplayer" id="multibutton" class="multibutton">
-        <p class="multitext">Local Multiplayer (Controls Are Arrow Keys for Blue And WASD for Green)</p> 
+        <img src="./Settings.png" alt="Settings Menu" id="settings" class="settings">
 
         <input type="button" value="Toggle Timed Mode" class="toggletimedmode" id="toggletimedmode">
 

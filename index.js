@@ -4,6 +4,17 @@
 // Add barriers that kill you?
 // AI snake branch (just moves randomly) (maybe different difficulty (how often it moves))
 // Make it so the death screen apears on Restart "r"
+// Work On Settings Menu CSS
+
+var settingsgmenu = document.getElementById("settingsmenu")
+
+document.getElementById("settings").onclick = ()=>{
+    settingsgmenu.style.display="grid";
+}
+
+document.getElementById("closesettings").onclick = ()=>{
+    settingsgmenu.style.display="none";
+}
 
 window.isVaildColor = (strColor) => {
     const s = new Option().style;
@@ -702,8 +713,5 @@ document.getElementById("pausedtext").onclick = ()=>{
     document.getElementById("snukeholder").style.display="flex";
 }
 
-setInterval(()=>{
-    window.globalcolor = random(1, 3)
-}, 700)
 
 document.getElementById("play").onclick = ()=>{start();window.multiplayer=document.getElementById("multibutton").checked; window.multipleapples=document.getElementById("applebutton").checked; document.getElementById("snukeholder").style.display="none";}
