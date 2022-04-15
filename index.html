@@ -190,8 +190,8 @@
 
         .settings {
             margin-top: 2%;
-            width:4%;
-            height:5%;
+            width:51.8  px;
+            height:51.8px;
             cursor:pointer;
         }
 
@@ -199,7 +199,7 @@
             position: absolute;
             width:50%;
             height:50%;
-            background-color: black;
+            background-color: rgb(46, 46, 46);
             left:50%;
             top:50%;
             z-index: 2;
@@ -207,9 +207,16 @@
             display: none;
             gap: 1%;
             column-count: 3;
+
             grid-column-start: 1;
             grid-column-end: 3;
             grid-template-columns: auto auto auto;
+
+            border-radius: 3%;
+            border-color: rgb(16, 16, 16);
+            border-style: inset;
+
+            border-width: 2px;
         }
 
         div.griditem{
@@ -218,6 +225,11 @@
             flex-direction: column;
             align-items: center;
             justify-content:center;
+            
+            border-color: rgb(57, 57, 57);
+            border-style:   solid;
+
+            border-width: 2px;
         }
     </style>
 </head>
