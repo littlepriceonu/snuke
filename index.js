@@ -1,6 +1,5 @@
 // TODO
 // Make color save in cookies. Make default color changeable?
-// Make Settings Menu
 // Add barriers that kill you?
 // AI snake branch (just moves randomly) (maybe different difficulty (how often it moves))
 // Make it so the death screen apears on Restart "r"
@@ -384,7 +383,7 @@ function start() {
         if (e.key == "r") {
                 if (!canvasmanager.paused) {
                 snuke = [{x:30, y:10}, {x: 20, y: 10}, {x: 10, y:10}, {x: 0, y:10}];// restart snake
-                snuke2 = [{x:30, y:900}, {x: 20, y: 900}, {x: 10, y:900}, {x: 0, y:900}]
+                snuke2 = [{x:30, y:270}, {x: 20, y: 270}, {x: 10, y:270}, {x: 0, y:270}]
                 movexby2 = 10
                 moveyby2 = 0
                 movexby = 10
@@ -500,6 +499,9 @@ function start() {
                             document.getElementById("overlay").style.display = "none"
                             document.getElementById("time").innerText = "150"
                         }
+                        else{
+                            document.getElementById("overlay").style.display = "none" 
+                        }
                         console.log("dead. snuke:", snuke); // log the snake 
                         if (getCookie("bestscore") != '' && (snuke.length-4) < parseInt(getCookie("bestscore"))) {
                             document.getElementById("bestscore").textContent ="Your Best Score: "+getCookie("bestscore")
@@ -581,7 +583,7 @@ function start() {
                             document.getElementById("score").textContent = "Snuke 1 Score: " + (snuke.length-4).toString() + "; Snuke 2 Score: " + (snuke2.length-4).toString()
                         }
                         snuke = [{x:30, y:10}, {x: 20, y: 10}, {x: 10, y:10}, {x: 0, y:10}];// restart snake
-                        snuke2 = [{x:30, y:900}, {x: 20, y: 900}, {x: 10, y:900}, {x: 0, y:900}]
+                        snuke2 = [{x:30, y:270}, {x: 20, y: 270}, {x: 10, y:270}, {x: 0, y:270}]
                         movexby = 10
                         moveyby = 0
                         movexby2 = 10
@@ -665,8 +667,8 @@ function start() {
     document.getElementById("retry").onclick = ()=>{
         canvasmanager.paused = false;
         deathscreen.style.display = "none";
-        document.getElementById("overlay").style.display = "flex"
         if (timedmode) {
+            document.getElementById("overlay").style.display = "flex"
             clearInterval(window.timeinterval);
             window.timeinterval = setInterval(() => {
                 window.window.timeintervalstarted = true
